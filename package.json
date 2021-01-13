@@ -1,6 +1,6 @@
 {
   "name": "@kahirokunn/snake-case-keys",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "type safe snake case keys.",
   "keywords": [
     "typescript",
@@ -54,6 +54,10 @@
     "package.json": [
       "sort-package-json"
     ]
+  },
+  "dependencies": {
+    "@types/map-obj": "^3.1.0",
+    "map-obj": "^4.1.0"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.11.0",

@@ -1,4 +1,5 @@
 import type { SnakeCase } from 'type-fest';
+import map from 'map-obj';
 
 type ShallowSnakeCase<T> = T extends Array<infer U>
   ? Array<
@@ -23,7 +24,9 @@ function camelToSnake<T extends string>(a: T) {
   ) as SnakeCase<T>;
 }
 
-export function shallowSnakeCaseKeys<T>(object: T): ShallowSnakeCase<T> {
+export function shallowSnakeCaseKeys<T>(
+  object: T,
+): T extends Array<any> ? never : ShallowSnakeCase<T> {
   return Object.keys(object).reduce(
     (base, camelKey) => ({
       ...base,
@@ -34,14 +37,14 @@ export function shallowSnakeCaseKeys<T>(object: T): ShallowSnakeCase<T> {
 }
 
 export function deepSnakeCaseKeys<T>(object: T): DeepSnakeCase<T> {
-  if (Array.isArray(object)) {
-    return object.map((i) => deepSnakeCaseKeys(i)) as any;
-  }
-  return Object.keys(object).reduce(
-    (base, camelKey) => ({
-      ...base,
-      [camelToSnake(camelKey)]: deepSnakeCaseKeys((object as any)[camelKey]),
-    }),
-    {},
+  return map(
+    object,
+    (key, val) => [
+      (typeof key === 'number' || typeof key === 'symbol'
+        ? key
+        : camelToSnake(key as string)) as any,
+      val,
+    ],
+    { deep: true },
   ) as any;
 }
