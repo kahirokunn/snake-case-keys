@@ -11,11 +11,7 @@ type ShallowSnakeCase<T> = T extends Array<infer U>
     };
 
 type DeepSnakeCase<T> = T extends Array<infer U>
-  ? Array<
-      {
-        [K in keyof U as SnakeCase<K>]: U[K];
-      }
-    >
+  ? Array<DeepSnakeCase<U>>
   : {
       [K in keyof T as SnakeCase<K>]: DeepSnakeCase<T[K]>;
     };
@@ -38,6 +34,9 @@ export function shallowSnakeCaseKeys<T>(object: T): ShallowSnakeCase<T> {
 }
 
 export function deepSnakeCaseKeys<T>(object: T): DeepSnakeCase<T> {
+  if (Array.isArray(object)) {
+    return object.map((i) => deepSnakeCaseKeys(i)) as any;
+  }
   return Object.keys(object).reduce(
     (base, camelKey) => ({
       ...base,

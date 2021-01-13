@@ -1,6 +1,6 @@
 {
   "name": "@kahirokunn/snake-case-keys",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "type safe snake case keys.",
   "keywords": [
     "typescript",
